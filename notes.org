@@ -2,7 +2,7 @@
 * Features
 - [-] Get All URls From A Given Channel
   - [X] Get All Messages in a Given Channel
-  - [ ] Parse Message and Save Only Urls
+  - [X] Parse Message and Save Only Urls
   - [ ] Specify Limit of Messages
 - [ ] Add Spotify Playlist Support
 - [ ] Add Youtube Playlist Support
