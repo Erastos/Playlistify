@@ -52,8 +52,8 @@ class Bot(discord.ext.commands.Bot):
 
     def stripMessage(self, message):
         """In the case that the message is too long for discord to send, cut off the excess"""
-        if (len(message) > DEFAULT_MESSAGE_LENGTH):
-            message = message[:DEFAULT_MESSAGE_LENGTH-1]
+        if (len(message) >= DEFAULT_MESSAGE_LENGTH):
+            message = message[:message.rfind('\n', 0, DEFAULT_MESSAGE_LENGTH-1)]
         return message
 
 
