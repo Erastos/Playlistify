@@ -8,6 +8,8 @@ import os
 from url import URL, UrlType
 
 SPOTIFY_URL_REGEX = r"(?:spotify)(?:.com/track/|:track:)(.+?)(?=\?|$)"
+MESSAGE_LIMIT = 100
+DEFAULT_MESSAGE_LENGTH = 1000
 
 class Bot(discord.ext.commands.Bot):
     def __init__(self):
@@ -15,19 +17,19 @@ class Bot(discord.ext.commands.Bot):
 
         # Command Definition
         @self.command()
-        async def urls(ctx, channel_query):
+        async def urls(ctx, channel_query, limit=MESSAGE_LIMIT):
             """Return valid service url messages to the user"""
             # Get channel from argument passed to string
             channel = self.getChannelFromSubstring(ctx.guild.channels, channel_query)
             if channel:
                 # Return messages from channel
-                messages = await self.getChannelMessagesUrls(channel)
+                messages = await self.getChannelMessagesUrls(channel, limit)
                 messages_text = list(map(lambda x: x.message.content, messages))
-                await ctx.send("Messages:\n" + "\n".join(messages_text))
+                await ctx.send(self.stripMessage("Messages:\n" + "\n".join(messages_text)))
             else:
                 await ctx.send(f"Can't Find Channel {channel_query}")
 
-    async def getChannelMessagesUrls(self, channel, limit=100):
+    async def getChannelMessagesUrls(self, channel, limit):
         """Get messages from a specifc channel that are valid service URLs"""
         # Get Messages from Channel and filter them
         messages = await channel.history(limit=limit).flatten()
@@ -47,6 +49,12 @@ class Bot(discord.ext.commands.Bot):
         for c in guild_text_channels:
             if re.match(channel_query, c.name):
                 return c
+
+    def stripMessage(self, message):
+        """In the case that the message is too long for discord to send, cut off the excess"""
+        if (len(message) > DEFAULT_MESSAGE_LENGTH):
+            message = message[:DEFAULT_MESSAGE_LENGTH-1]
+        return message
 
 
 
