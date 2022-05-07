@@ -1,0 +1,8 @@
+#+title: Notes
+* Features
+- [ ] Get All URls From A Given Channel
+  - [ ] Get All Messages in a Given Channel
+  - [ ] Parse Message and Save Only Urls
+- [ ] Add Spotify Playlist Support
+- [ ] Add Youtube Playlist Support
+* Notes
