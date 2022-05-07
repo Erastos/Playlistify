@@ -4,6 +4,8 @@
   - [X] Get All Messages in a Given Channel
   - [X] Parse Message and Save Only Urls
   - [ ] Specify Limit of Messages
+  - [ ] Split each song into its own message
+  - [ ] Strip Messages on the nearest newline
 - [ ] Add Spotify Playlist Support
   - [ ] Format Spotify IDs to be proper spotify URIs
 - [ ] Add Youtube Playlist Support
