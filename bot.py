@@ -25,7 +25,8 @@ class Bot(discord.ext.commands.Bot):
                 # Return messages from channel
                 messages = await self.getChannelMessagesUrls(channel, limit)
                 messages_text = list(map(lambda x: x.message.content, messages))
-                await ctx.send(self.stripMessage("Messages:\n" + "\n".join(messages_text)))
+                print("Messages:\n" + "\n".join(messages_text))
+                await ctx.send("Command Executed!")
             else:
                 await ctx.send(f"Can't Find Channel {channel_query}")
 
