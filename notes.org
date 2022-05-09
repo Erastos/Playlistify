@@ -6,8 +6,10 @@
   - [X] Specify Limit of Messages
   - [X] Strip Messages on the nearest newline
   - [X] Split each song into its own message
-- [ ] Add Spotify Playlist Support
-  - [ ] Setup Spotify OAuth Authentication Flow
+- [-] Add Spotify Playlist Support
+  - [X] Setup Spotify OAuth Authentication Flow
+    - [X] Verify Basic Authentication Example
+    - [ ] Setup Headless Authentication for use with Discord
   - [ ] Format Spotify IDs to be proper spotify URIs
 - [ ] Add Youtube Playlist Support
 * Notes
