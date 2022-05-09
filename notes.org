@@ -7,6 +7,7 @@
   - [X] Strip Messages on the nearest newline
   - [X] Split each song into its own message
 - [ ] Add Spotify Playlist Support
+  - [ ] Setup Spotify OAuth Authentication Flow
   - [ ] Format Spotify IDs to be proper spotify URIs
 - [ ] Add Youtube Playlist Support
 * Notes
