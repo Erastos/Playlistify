@@ -12,6 +12,7 @@
     - [-] Setup Headless Authentication for use with Discord
       - [X] Disconnect Client Instantiation and Client Authorization
       - [ ] Setup Discord Authorization Logic
+      - [ ] Add SQlite File for tracking playlist ids
   - [ ] Format Spotify IDs to be proper spotify URIs
 - [ ] Add Youtube Playlist Support
 * Notes
