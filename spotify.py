@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
+from typing import Any
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
 load_dotenv()
 
-SCOPES = ["playlist-modify-public", "playlist-modify-private"]
+SCOPES = ["playlist-modify-public", "playlist-modify-private", "playlist-read-private"]
 
 class SpotifyClient():
     def __init__(self):
-        self.client = None
+        self.client: Any = None
         self.auth = SpotifyOAuth(scope=SCOPES, open_browser=False)
         self.authorize_url = self.auth.get_authorize_url()
         self.auth_object = None
@@ -19,10 +20,20 @@ class SpotifyClient():
         self.access_token = self.auth_object["access_token"]
         self.client = spotipy.Spotify(auth=self.access_token)
 
+    def searchForPlaylist(self, name, limit):
+        playlists = self.client.current_user_playlists(limit=limit)
+        offset = 0
+        while True:
+            for playlist in playlists["items"]:
+                if name in playlist["name"]:
+                    return playlist
+            offset += limit
+            playlists = self.client.current_user_playlists(offset=offset, limit=limit)
+
+
 if __name__ == "__main__":
     client = SpotifyClient()
     print(f"Authorize URL: {client.authorize_url}")
     response_url = input("Response URL: ")
     client.authorizeClient(response_url)
-
-    print(client.client.me())
+    playlist = client.searchForPlaylist("Deep House Relax", 50)
