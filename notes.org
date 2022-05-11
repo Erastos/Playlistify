@@ -11,8 +11,9 @@
     - [X] Verify Basic Authentication Example
     - [-] Setup Headless Authentication for use with Discord
       - [X] Disconnect Client Instantiation and Client Authorization
-      - [ ] Setup Discord Authorization Logic
+      - [X] Create Playlist to Store the Songs
       - [ ] Add SQlite File for tracking playlist ids
+      - [ ] Setup Discord Authorization Logic
   - [ ] Format Spotify IDs to be proper spotify URIs
 - [ ] Add Youtube Playlist Support
 * Notes
