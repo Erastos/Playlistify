@@ -30,10 +30,18 @@ class SpotifyClient():
             offset += limit
             playlists = self.client.current_user_playlists(offset=offset, limit=limit)
 
+    def getOrCreatePlaylist(self):
+        if (playlist := self.searchForPlaylist("Playlistify - Spotify Playlist", 50)):
+            return playlist
+        else:
+            playlist = self.client.user_playlist_create(user=self.client.me()["id"], name="Playlistify - Spotify Playlist", public=False)
+            return playlist
+
+
 
 if __name__ == "__main__":
     client = SpotifyClient()
     print(f"Authorize URL: {client.authorize_url}")
     response_url = input("Response URL: ")
     client.authorizeClient(response_url)
-    playlist = client.searchForPlaylist("Deep House Relax", 50)
+    playlist = client.getOrCreatePlaylist()
