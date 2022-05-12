@@ -37,6 +37,25 @@ class SpotifyClient():
             playlist = self.client.user_playlist_create(user=self.client.me()["id"], name="Playlistify - Spotify Playlist", public=False)
             return playlist
 
+    def getAllTrackIds(self, playlist_id):
+        tracks = self.client.playlist_tracks(playlist_id)
+        track_ids = []
+
+        while tracks["next"]:
+            track_ids.extend([track["track"]["id"] for track in tracks["items"]])
+            tracks = self.client.next(tracks)
+
+        track_ids.extend([track["track"]["id"] for track in tracks["items"]])
+
+        return track_ids
+
+    def addDifferentSongs(self, playlist_id, track_ids):
+        tracks = self.getAllTrackIds(playlist_id)
+        tracks_add = list(set(track_ids).difference(tracks))
+        self.client.playlist_add_items(playlist_id, tracks_add)
+        return tracks_add
+
+
 
 
 if __name__ == "__main__":
@@ -45,3 +64,4 @@ if __name__ == "__main__":
     response_url = input("Response URL: ")
     client.authorizeClient(response_url)
     playlist = client.getOrCreatePlaylist()
+    tracks = client.addDifferentSongs(playlist["id"], ["2W29TNaSCiolWbPfQNgNOW"])
