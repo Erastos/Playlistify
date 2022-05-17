@@ -41,7 +41,7 @@ class SpotifyClient():
         tracks = self.client.playlist_tracks(playlist_id)
         track_ids = []
 
-        while tracks["next"]:
+        for _ in range(5):
             track_ids.extend([track["track"]["id"] for track in tracks["items"]])
             tracks = self.client.next(tracks)
 
