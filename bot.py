@@ -4,8 +4,12 @@ import discord.ext.commands
 from discord.channel import TextChannel
 import re
 import os
+import dotenv
 
 from url import URL, UrlType
+from spotify import SpotifyClient
+
+dotenv.load_dotenv()
 
 SPOTIFY_URL_REGEX = r"(?:spotify)(?:.com/track/|:track:)(.+?)(?=\?|$)"
 MESSAGE_LIMIT = 100
@@ -14,6 +18,7 @@ DEFAULT_MESSAGE_LENGTH = 1000
 class Bot(discord.ext.commands.Bot):
     def __init__(self):
         super().__init__(command_prefix='$')
+        self.sclient = SpotifyClient()
 
         # Command Definition
         @self.command()
@@ -29,6 +34,17 @@ class Bot(discord.ext.commands.Bot):
                 await ctx.send("Command Executed!")
             else:
                 await ctx.send(f"Can't Find Channel {channel_query}")
+
+        @self.command()
+        async def addSongs(ctx, channel_query):
+            channel = self.getChannelFromSubstring(ctx.guild.channels, channel_query)
+            if channel:
+                messages = await self.getChannelMessagesUrls(channel, MESSAGE_LIMIT)
+                message_urls = list(set(list(map(lambda x: x.full_url, messages))))
+                print(message_urls)
+                await ctx.send("Command Executed!")
+            else:
+                await ctx.send("Can't Find Channel {channel_query}")
 
     async def getChannelMessagesUrls(self, channel, limit):
         """Get messages from a specifc channel that are valid service URLs"""
