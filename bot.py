@@ -12,7 +12,7 @@ from spotify import SpotifyClient
 dotenv.load_dotenv()
 
 SPOTIFY_URL_REGEX = r"(?:spotify)(?:.com/track/|:track:)(.+?)(?=\?|$)"
-MESSAGE_LIMIT = 100
+MESSAGE_LIMIT = 1000
 DEFAULT_MESSAGE_LENGTH = 1000
 
 class Bot(discord.ext.commands.Bot):
