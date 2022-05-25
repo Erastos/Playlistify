@@ -60,7 +60,7 @@ class Bot(discord.ext.commands.Bot):
 
                 await ctx.send("Command Executed!")
             else:
-                await ctx.send("Can't Find Channel {channel_query}")
+                await ctx.send(f"Can't Find Channel {channel_query}")
 
     async def getChannelMessagesUrls(self, channel, limit):
         """Get messages from a specifc channel that are valid service URLs"""
