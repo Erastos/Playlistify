@@ -48,11 +48,19 @@ class SpotifyClient():
 
         return track_ids
 
+    def bulkAddTracks(self, playlist_id, tracks):
+        list_of_tracks = []
+        for i in range(0, len(tracks), 100):
+            list_of_tracks.append(tracks[i:i+100])
+        for group in list_of_tracks:
+            self.client.playlist_add_items(playlist_id, group)
+
+
     def addDifferentSongs(self, playlist_id, track_ids):
         tracks = self.getAllTrackIds(playlist_id)
         tracks_add = list(set(track_ids).difference(tracks))
         if len(tracks_add):
-            self.client.playlist_add_items(playlist_id, tracks_add)
+            self.bulkAddTracks(playlist_id, tracks_add)
         return tracks_add
 
 
