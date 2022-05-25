@@ -51,7 +51,8 @@ class SpotifyClient():
     def addDifferentSongs(self, playlist_id, track_ids):
         tracks = self.getAllTrackIds(playlist_id)
         tracks_add = list(set(track_ids).difference(tracks))
-        self.client.playlist_add_items(playlist_id, tracks_add)
+        if len(tracks_add):
+            self.client.playlist_add_items(playlist_id, tracks_add)
         return tracks_add
 
 
