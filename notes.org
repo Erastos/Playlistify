@@ -19,6 +19,6 @@
       - [ ] If the authorization url is not valid, allow the user to send the URL again
         - Could be done by always just anticipating an authorization url by DM
         - Would also allow for a user to just copy and paste the same authorization url multiple times
-  - [ ] Format Spotify IDs to be proper spotify URIs
+  - [X] Format Spotify IDs to be proper spotify URIs
 - [ ] Add Youtube Playlist Support
 * Notes
