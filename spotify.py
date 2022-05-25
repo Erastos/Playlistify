@@ -23,7 +23,7 @@ class SpotifyClient():
     def searchForPlaylist(self, name, limit):
         playlists = self.client.current_user_playlists(limit=limit)
         offset = 0
-        while True:
+        for _ in range(5):
             for playlist in playlists["items"]:
                 if name in playlist["name"]:
                     return playlist
