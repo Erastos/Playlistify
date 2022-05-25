@@ -2,6 +2,8 @@
 
 import discord.ext.commands
 from discord.channel import TextChannel
+from discord.member import Member
+from discord.message import Message
 import re
 import os
 import dotenv
@@ -36,12 +38,26 @@ class Bot(discord.ext.commands.Bot):
                 await ctx.send(f"Can't Find Channel {channel_query}")
 
         @self.command()
-        async def addSongs(ctx, channel_query):
+        async def addSongs(ctx: discord.ext.commands.Context, channel_query):
             channel = self.getChannelFromSubstring(ctx.guild.channels, channel_query)
             if channel:
                 messages = await self.getChannelMessagesUrls(channel, MESSAGE_LIMIT)
-                message_urls = list(set(list(map(lambda x: x.full_url, messages))))
-                print(message_urls)
+                message_urls = list(map(lambda x: x.full_url, set(messages)))
+
+                # Setup Client
+                authorize_url = self.sclient.authorize_url
+                user = ctx.author
+
+                # Send DM to User with the Authorize URL
+                dm_channel = await user.create_dm()
+                await dm_channel.send(f"Authorize URL: {authorize_url}\nPaste this URL into your browser:\nReply to this message with the URL that your browser returns you too")
+
+                redirect_url = await self.wait_for('message', check=lambda x: x.author == ctx.author and x.guild is None)
+
+                # Add Tracks to Playlist
+                tracks = self.addSongsPlaylist(message_urls, redirect_url.content)
+                print(f"Tracks added: {tracks}")
+
                 await ctx.send("Command Executed!")
             else:
                 await ctx.send("Can't Find Channel {channel_query}")
@@ -60,6 +76,13 @@ class Bot(discord.ext.commands.Bot):
         return urls
 
 
+    def addSongsPlaylist(self, message_urls, redirect_url):
+        self.sclient.authorizeClient(redirect_url)
+        playlist = self.sclient.getOrCreatePlaylist()
+        tracks = self.sclient.addDifferentSongs(playlist["id"], message_urls)
+        return tracks
+
+
     def getChannelFromSubstring(self, channel_list, channel_query):
         """Get all text channels from the server that the user is sending the message"""
         guild_text_channels = filter(lambda x: isinstance(x, TextChannel), channel_list)
@@ -72,7 +95,6 @@ class Bot(discord.ext.commands.Bot):
         if (len(message) >= DEFAULT_MESSAGE_LENGTH):
             message = message[:message.rfind('\n', 0, DEFAULT_MESSAGE_LENGTH-1)]
         return message
-
 
 
 
