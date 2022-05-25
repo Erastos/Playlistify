@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 
 import discord
@@ -11,9 +11,9 @@ class UrlType(Enum):
     YOUTUBE = 1
 
 
-@dataclass
+@dataclass(frozen=True)
 class URL:
     """Class that represents the url for a specific track/video on some service"""
     full_url: str
-    url_type: UrlType
-    message: discord.Message
+    url_type: UrlType = field(compare=False)
+    message: discord.Message = field(compare=False)
