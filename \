@@ -20,7 +20,7 @@ DEFAULT_MESSAGE_LENGTH = 1000
 class Bot(discord.ext.commands.Bot):
     def __init__(self):
         super().__init__(command_prefix='$')
-        self.sclient = None
+        self.sclient = SpotifyClient()
 
         # Command Definition
         @self.command()
@@ -39,7 +39,6 @@ class Bot(discord.ext.commands.Bot):
 
         @self.command()
         async def addSongs(ctx: discord.ext.commands.Context, channel_query):
-            self.sclient = SpotifyClient()
             channel = self.getChannelFromSubstring(ctx.guild.channels, channel_query)
             if channel:
                 messages = await self.getChannelMessagesUrls(channel, MESSAGE_LIMIT)
