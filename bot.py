@@ -4,6 +4,7 @@ import discord.ext.commands
 from discord.channel import TextChannel
 from discord.member import Member
 from discord.message import Message
+import discord
 import re
 import os
 import dotenv
@@ -19,7 +20,9 @@ DEFAULT_MESSAGE_LENGTH = 1000
 
 class Bot(discord.ext.commands.Bot):
     def __init__(self):
-        super().__init__(command_prefix='$')
+        intents = discord.Intents.default()
+        intents.message_content = True
+        super().__init__(command_prefix='$', intents=intents)
         self.sclient = None
 
         # Command Definition
@@ -42,15 +45,18 @@ class Bot(discord.ext.commands.Bot):
             self.sclient = SpotifyClient()
             channel = self.getChannelFromSubstring(ctx.guild.channels, channel_query)
             if channel:
+                user = ctx.author
+                dm_channel = await user.create_dm()
+
+                await dm_channel.send(f"Hello!\nIn preperation for creating the playlist, the discord channel\n```{channel}```is being parsed.\nThis may take a while.")
+
                 messages = await self.getChannelMessagesUrls(channel, MESSAGE_LIMIT)
                 message_urls = list(map(lambda x: x.full_url, set(messages)))
 
                 # Setup Client
                 authorize_url = self.sclient.authorize_url
-                user = ctx.author
 
                 # Send DM to User with the Authorize URL
-                dm_channel = await user.create_dm()
                 await dm_channel.send(f"Authorize URL: {authorize_url}\nPaste this URL into your browser:\nReply to this message with the URL that your browser returns you too")
 
                 redirect_url = await self.wait_for('message', check=lambda x: x.author == ctx.author and x.guild is None)
@@ -66,7 +72,8 @@ class Bot(discord.ext.commands.Bot):
     async def getChannelMessagesUrls(self, channel, limit):
         """Get messages from a specifc channel that are valid service URLs"""
         # Get Messages from Channel and filter them
-        messages = await channel.history(limit=limit).flatten()
+        # messages =  [message async for message in channel.history(limit=limit)]
+        messages =  [message async for message in channel.history(limit=None)]
         urls = list(filter(lambda x: re.search(SPOTIFY_URL_REGEX, x.content),messages))
         # Remove Messages the Bot Sent
         urls = list(filter(lambda x: x.author.id != self.user.id, urls))
