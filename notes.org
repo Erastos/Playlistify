@@ -21,5 +21,6 @@
         - Would also allow for a user to just copy and paste the same authorization url multiple times
   - [X] Format Spotify IDs to be proper spotify URIs
   - [X] Add the ability to add more than 100 tracks to a playlist
+  - [ ] Add the ability to process spotify albums and add the songs to the playlist
 - [ ] Add Youtube Playlist Support
 * Notes
