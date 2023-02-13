@@ -22,5 +22,7 @@
   - [X] Format Spotify IDs to be proper spotify URIs
   - [X] Add the ability to add more than 100 tracks to a playlist
   - [ ] Add the ability to process spotify albums and add the songs to the playlist
+  - [ ] Add the ability to specify if the playlist should be ordered by when it appeared in the channel or randomly
+  - [ ] Add the ability to specify the name of the playlist
 - [ ] Add Youtube Playlist Support
 * Notes
